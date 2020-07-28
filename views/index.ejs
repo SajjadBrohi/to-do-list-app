@@ -4,9 +4,30 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>To-do List</title>
+		<link rel="stylesheet" href="css/styles.css" />
 	</head>
 	<body>
-		<h1>Current day is <%= currentDay %> .</h1>
-		<p>Get back to work!</p>
+		<div class="box" id="heading">
+			<h1>The current day is <%= currentDay %></h1>
+		</div>
+
+		<div class="box">
+			<%for (let i = 0; i < toDoActivity.length; i++) {%>
+			<div class="item">
+				<input type="checkbox" name="check" />
+				<p><%= toDoActivity[i] %></p>
+			</div>
+			<%}%>
+
+			<form action="/" method="post" class="item">
+				<input
+					type="text"
+					name="todo"
+					placeholder="New Item"
+					autocomplete="off"
+				/>
+				<button type="submit" name="button" value="<%= toDoType %>">+</button>
+			</form>
+		</div>
 	</body>
 </html>

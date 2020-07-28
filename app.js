@@ -1,4 +1,5 @@
 const express = require('express');
+const date = require(__dirname + '/date.js');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -9,22 +10,8 @@ const toDoActivities = [];
 const workActivities = [];
 
 app.get('/', (req, res) => {
-	const daysArray = [
-		'Sunday',
-		'Monday',
-		'Tuesday',
-		'Wednesday',
-		'Thursday',
-		'Friday',
-		'Saturday',
-		'Sunday',
-	];
-
-	const date = new Date();
-	const day = daysArray[date.getDay()];
-
 	res.render('index', {
-		currentDay: day,
+		currentDay: date.getDay(),
 		toDoActivity: toDoActivities,
 		toDoType: 'home',
 	});
@@ -36,7 +23,7 @@ app.get('/', (req, res) => {
 
 app.get('/work', (req, res) => {
 	res.render('index', {
-		currentDay: 'Work',
+		currentDay: date.getDay() + '; Gotta work!',
 		toDoActivity: workActivities,
 		toDoType: 'work',
 	});
@@ -45,6 +32,9 @@ app.get('/work', (req, res) => {
 app.post('/', (req, res) => {
 	const toDoActivity = req.body.todo;
 
+	// We set an ejs variable on the button which is passed whenever we do
+	// res.render in the above app.get methods. So here we use that value
+	// to find where the request is coming from, and then process it accordingly
 	if (req.body.button === 'home') {
 		toDoActivities.push(toDoActivity);
 		res.redirect('/');

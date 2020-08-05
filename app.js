@@ -83,6 +83,8 @@ app.post('/', (req, res) => {
 app.post('/delete', (req, res) => {
 	const route = Object.keys(req.body)[0];
 	const id = req.body[route];
+
+	// Deleting the data from mongodb
 	Item.deleteOne({ _id: id }, (err) => {
 		if (err) {
 			console.log(err);
@@ -91,6 +93,7 @@ app.post('/delete', (req, res) => {
 		}
 	});
 
+	// Deleting the data from the relevant array
 	for (let key in toDoActivities) {
 		if (key === route) {
 			toDoActivities[key].forEach((activity, index) => {

@@ -15,10 +15,6 @@ app.get('/', (req, res) => {
 		toDoActivity: toDoActivities,
 		toDoType: 'home',
 	});
-	// Compiler reaches here first, sees that there
-	// is no variable so gives error. So you will have
-	// to define your variables here in order to not
-	// get an error
 });
 
 app.get('/work', (req, res) => {
@@ -31,10 +27,7 @@ app.get('/work', (req, res) => {
 
 app.post('/', (req, res) => {
 	const toDoActivity = req.body.todo;
-
-	// We set an ejs variable on the button which is passed whenever we do
-	// res.render in the above app.get methods. So here we use that value
-	// to find where the request is coming from, and then process it accordingly
+	
 	if (req.body.button === 'home') {
 		toDoActivities.push(toDoActivity);
 		res.redirect('/');

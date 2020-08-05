@@ -49,10 +49,9 @@ app.get('/', (req, res) => {
 
 // Routing request to '/:url'
 app.get('/:url', (req, res) => {
-	const url = req.params.url;
+	const url = req.params.url.toLowerCase();
 	if (!toDoActivities.hasOwnProperty(url)) {
 		toDoActivities[req.params.url] = [];
-		console.log('not present');
 	}
 
 	res.render('index', {

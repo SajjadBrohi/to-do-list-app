@@ -14,9 +14,9 @@ mongoose.connect('mongodb://localhost/todolistDB', {
 
 // Initialising the array constants to be used in storing the activities
 const toDoActivities = {
-	homeActivities: [],
+	home: [],
 };
-const homeActivities = toDoActivities['homeActivities'];
+const homeActivities = toDoActivities['home'];
 
 // Creating 'items' collection in mongodb through mongoose
 const itemsSchema = { name: String, route: String };
@@ -64,23 +64,26 @@ app.get('/:url', (req, res) => {
 
 // Using data from the form and saving to mongodb
 app.post('/', (req, res) => {
-	const toDoActivity = new Item({ name: req.body.todo });
-	const route = req.body.button;
+	const toDoActivity = new Item({
+		name: req.body.todo,
+		route: req.body.button,
+	});
 	toDoActivity.save();
 
-	if (route === 'home') {
+	if (toDoActivity.route === 'home') {
 		homeActivities.push(toDoActivity);
 		res.redirect('/');
 	} else {
-		toDoActivities[route].push(toDoActivity);
-		res.redirect(`/${route}`);
+		toDoActivities[toDoActivity.route].push(toDoActivity);
+		res.redirect(`/${toDoActivity.route}`);
 	}
 });
 
 // Using data from the checkbox form to delete data
 app.post('/delete', (req, res) => {
-	const item = Object.keys(req.body)[0];
-	Item.deleteOne({ name: item }, (err) => {
+	const route = Object.keys(req.body)[0];
+	const id = req.body[route];
+	Item.deleteOne({ _id: id }, (err) => {
 		if (err) {
 			console.log(err);
 		} else {
@@ -88,13 +91,17 @@ app.post('/delete', (req, res) => {
 		}
 	});
 
-	homeActivities.forEach((activity, index) => {
-		if (activity.name === item) {
-			homeActivities.splice(index, 1);
+	for (let key in toDoActivities) {
+		if (key === route) {
+			toDoActivities[key].forEach((activity, index) => {
+				if (activity['_id'] == id) {
+					toDoActivities[key].splice(index, 1);
+				}
+			});
 		}
-	});
+	}
 
-	res.redirect('/');
+	res.redirect(`/${route}`);
 });
 
 // Listening to port 3000

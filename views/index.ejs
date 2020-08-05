@@ -10,8 +10,9 @@
 		<div class="item">
 			<input
 				type="checkbox"
-				name="<%= toDoActivity[i].name %>"
 				onchange="this.form.submit()"
+				name="<%= toDoActivity[i].route %>"
+				value="<%= toDoActivity[i]._id %>"
 			/>
 			<p><%= toDoActivity[i].name %></p>
 		</div>

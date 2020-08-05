@@ -5,12 +5,18 @@
 </div>
 
 <div class="box">
-	<%for (let i = 0; i < toDoActivity.length; i++) {%>
-	<div class="item">
-		<input type="checkbox" name="check" />
-		<p><%= toDoActivity[i] %></p>
-	</div>
-	<%}%>
+	<form action="/delete" method="post">
+		<%for (let i = 0; i < toDoActivity.length; i++) {%>
+		<div class="item">
+			<input
+				type="checkbox"
+				name="<%= toDoActivity[i].name %>"
+				onchange="this.form.submit()"
+			/>
+			<p><%= toDoActivity[i].name %></p>
+		</div>
+		<%}%>
+	</form>
 
 	<form action="/" method="post" class="item">
 		<input type="text" name="todo" placeholder="New Item" autocomplete="off" />

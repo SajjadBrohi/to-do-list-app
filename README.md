@@ -2,10 +2,13 @@
 
 Uses:
 
-1. NodeJS
+1. Node.js
 
-2. ExpressJS
+2. Express.js
 
-3. EJS
+3. MongoDB (Mongoose)
+
+4. Embedded JavaScript (EJS)
 
 4. Bootstrap
+

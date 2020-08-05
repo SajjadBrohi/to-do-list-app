@@ -17,22 +17,28 @@ const toDoActivities = {
 	homeActivities: [],
 };
 const homeActivities = toDoActivities['homeActivities'];
-// const workActivities = [];
 
 // Creating 'items' collection in mongodb through mongoose
-const itemsSchema = { name: String };
+const itemsSchema = { name: String, route: String };
 const Item = mongoose.model('Item', itemsSchema);
 
-// Finding all existing 'items' from mongodb
+// Finding all existing 'items' for each route from mongodb
 Item.find((err, items) => {
 	if (err) {
 		console.log("Couldn't extract items");
 	} else {
-		items.forEach((item) => homeActivities.push(item));
+		items.forEach((item) => {
+			if (item.route === 'home') {
+				homeActivities.push(item);
+			} else {
+				toDoActivities[item.route] = [];
+				toDoActivities[item.route].push(item);
+			}
+		});
 	}
 });
 
-// Routing request to the root directory
+// Routing request to the root route
 app.get('/', (req, res) => {
 	res.render('index', {
 		currentDay: date.getDay(),

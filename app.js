@@ -13,8 +13,11 @@ mongoose.connect('mongodb://localhost/todolistDB', {
 });
 
 // Initialising the array constants to be used in storing the activities
-const toDoActivities = [];
-const workActivities = [];
+const toDoActivities = {
+	homeActivities: [],
+};
+const homeActivities = toDoActivities['homeActivities'];
+// const workActivities = [];
 
 // Creating 'items' collection in mongodb through mongoose
 const itemsSchema = { name: String };
@@ -25,7 +28,7 @@ Item.find((err, items) => {
 	if (err) {
 		console.log("Couldn't extract items");
 	} else {
-		items.forEach((item) => toDoActivities.push(item));
+		items.forEach((item) => homeActivities.push(item));
 	}
 });
 
@@ -33,31 +36,38 @@ Item.find((err, items) => {
 app.get('/', (req, res) => {
 	res.render('index', {
 		currentDay: date.getDay(),
-		toDoActivity: toDoActivities,
+		toDoActivity: homeActivities,
 		toDoType: 'home',
 	});
 });
 
-// Routing request to '/work'
-app.get('/work', (req, res) => {
+// Routing request to '/:url'
+app.get('/:url', (req, res) => {
+	const url = req.params.url;
+	if (!toDoActivities.hasOwnProperty(url)) {
+		toDoActivities[req.params.url] = [];
+		console.log('not present');
+	}
+
 	res.render('index', {
-		currentDay: date.getDay() + '; Gotta work!',
-		toDoActivity: workActivities,
-		toDoType: 'work',
+		currentDay: date.getDay(),
+		toDoActivity: toDoActivities[req.params.url],
+		toDoType: url,
 	});
 });
 
 // Using data from the form and saving to mongodb
 app.post('/', (req, res) => {
 	const toDoActivity = new Item({ name: req.body.todo });
+	const route = req.body.button;
 	toDoActivity.save();
 
-	if (req.body.button === 'home') {
-		toDoActivities.push(toDoActivity);
+	if (route === 'home') {
+		homeActivities.push(toDoActivity);
 		res.redirect('/');
 	} else {
-		workActivities.push(toDoActivity);
-		res.redirect('/work');
+		toDoActivities[route].push(toDoActivity);
+		res.redirect(`/${route}`);
 	}
 });
 
@@ -72,9 +82,9 @@ app.post('/delete', (req, res) => {
 		}
 	});
 
-	toDoActivities.forEach((activity, index) => {
+	homeActivities.forEach((activity, index) => {
 		if (activity.name === item) {
-			toDoActivities.splice(index, 1);
+			homeActivities.splice(index, 1);
 		}
 	});
 

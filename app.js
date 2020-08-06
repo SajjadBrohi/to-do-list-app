@@ -1,8 +1,9 @@
+// Requiring the required libraries and packages
 const express = require('express');
 const mongoose = require('mongoose');
 const date = require(__dirname + '/date.js');
 require('dotenv').config();
-console.log(process.env);
+
 const app = express();
 
 app.set('view engine', 'ejs');

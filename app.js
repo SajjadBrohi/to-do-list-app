@@ -7,10 +7,13 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
-mongoose.connect('mongodb://localhost/todolistDB', {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+mongoose.connect(
+	'mongodb+srv://admin-sajjad:Test123@cluster0.xufq3.mongodb.net/todolistDB?retryWrites=true&w=majority',
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	},
+);
 
 // Initialising the array constants to be used in storing the activities
 const toDoActivities = {
@@ -40,11 +43,7 @@ Item.find((err, items) => {
 
 // Routing request to the root route
 app.get('/', (req, res) => {
-	res.render('index', {
-		currentDay: date.getDay(),
-		toDoActivity: homeActivities,
-		toDoType: 'home',
-	});
+	res.redirect('/home');
 });
 
 // Routing request to '/:url'

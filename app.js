@@ -1,19 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const date = require(__dirname + '/date.js');
-
+require('dotenv').config();
+console.log(process.env);
 const app = express();
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
-mongoose.connect(
-	'mongodb+srv://admin-sajjad:Test123@cluster0.xufq3.mongodb.net/todolistDB?retryWrites=true&w=majority',
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	},
-);
+mongoose.connect(process.env.MONGODB_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
 
 // Initialising the array constants to be used in storing the activities
 const toDoActivities = {

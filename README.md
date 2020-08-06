@@ -2,7 +2,7 @@
 
 Simple to-do-list app created for practice. Deployed to Heroku, and connected to database at MongoDB Atlas:
 
-www.saj-to-do-list.herokuapp.com/
+https://saj-to-do-list.herokuapp.com
 
 ## Uses:
 

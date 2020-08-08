@@ -14,5 +14,5 @@ https://saj-to-do-list.herokuapp.com
 
 4. Embedded JavaScript (EJS)
 
-4. Bootstrap
+5. Bootstrap
 

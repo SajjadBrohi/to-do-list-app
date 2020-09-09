@@ -1,4 +1,4 @@
-# to-do-list-app
+# To-do list App
 
 Simple to-do-list app created for practice. Deployed to Heroku, and connected to database at MongoDB Atlas:
 
